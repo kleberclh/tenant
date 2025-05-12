@@ -6,5 +6,6 @@ const enterpriseRouter = Router();
 
 enterpriseRouter.post("/create", enterpriseController.createEnterprise);
 enterpriseRouter.get("/buscar", enterpriseController.getAllEnterprise);
+enterpriseRouter.get("/buscar/:id", enterpriseController.getEnterprise);
 
 export default enterpriseRouter;
