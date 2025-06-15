@@ -1,5 +1,6 @@
 import express from "express";
-import enterpriseRouter from "./routes/enterprise/enterpriseRoute";
+
+import routes from "./routes/routes";
 
 const app = express();
 
@@ -9,6 +10,6 @@ app.get("/", (req, res) => {
   res.send("Hello from app!");
 });
 
-app.use(enterpriseRouter);
+app.use("/api", routes);
 
 export default app;

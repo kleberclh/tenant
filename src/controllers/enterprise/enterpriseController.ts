@@ -1,10 +1,17 @@
 import { Request, Response } from "express";
 import { prisma } from "../../config/prisma";
+import {
+  CreateEnterpriseBody,
+  EnterpriseParams,
+} from "../../utils/enterpriseTypes";
 
 /*
 FUNÇÃO PARA CRIAR UMA EMPRESA
 */
-async function createEnterprise(req: Request, res: Response) {
+async function createEnterprise(
+  req: Request<{}, {}, CreateEnterpriseBody>,
+  res: Response
+) {
   try {
     const { name, cnpj } = req.body;
 
@@ -78,7 +85,7 @@ async function getAllEnterprise(req: Request, res: Response) {
 FUNÇÃO PARA BUSCAR UMA EMPRESA
 */
 
-async function getEnterprise(req: Request, res: Response) {
+async function getEnterprise(req: Request<EnterpriseParams>, res: Response) {
   const { id } = req.params;
 
   try {
