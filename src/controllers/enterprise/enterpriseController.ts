@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../config/prisma";
-import {
-  CreateEnterpriseBody,
-  EnterpriseParams,
-} from "../../utils/enterpriseTypes";
+import { CreateEnterpriseBody } from "../../utils/enterpriseTypes";
 
 /*
 FUNÇÃO PARA CRIAR UMA EMPRESA
@@ -69,8 +66,15 @@ FUNÇÃO PARA BUSCAR TODAS AS EMPRESAS
 */
 async function getAllEnterprise(req: Request, res: Response) {
   try {
-    const buscarEmpresas = await prisma.enterprise.findMany();
-    res.json(buscarEmpresas);
+    const buscarEmpresas = await prisma.enterprise.findMany({
+      include: {
+        users: true,
+      },
+    });
+
+    res.json({
+      empresas: buscarEmpresas,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -85,7 +89,7 @@ async function getAllEnterprise(req: Request, res: Response) {
 FUNÇÃO PARA BUSCAR UMA EMPRESA
 */
 
-async function getEnterprise(req: Request<EnterpriseParams>, res: Response) {
+async function getEnterprise(req: Request, res: Response) {
   const { id } = req.params;
 
   try {
@@ -121,13 +125,16 @@ async function getEnterprise(req: Request<EnterpriseParams>, res: Response) {
       where: {
         id: Number(id),
       },
+      include: {
+        users: true,
+      },
     });
 
     res.json({
       message: "Empresa encontrada com sucesso!",
       status: 200,
       success: true,
-      buscarEmpresa,
+      empresa: buscarEmpresa,
     });
   } catch (error) {
     console.error(error);
