@@ -20,7 +20,8 @@ model Enterprise {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users User[] // relacionamento: uma empresa tem vários usuários
+  users   User[] // Uma empresa tem vários usuários
+  clients Client[] // Uma empresa tem vários clientes
 
   @@map("enterprise")
 }
@@ -38,4 +39,24 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@map("user")
+}
+
+model Client {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String
+  debt         Float      @default(0) // Boa prática: já deixar default 0
+  enterpriseId Int
+  enterprise   Enterprise @relation(fields: [enterpriseId], references: [id])
+  accounts     Accounts[] // Nome no plural também
+
+  @@map("client")
+}
+
+model Accounts {
+  id          Int    @id @default(autoincrement())
+  description String
+  debt        Float
+  clientId    Int
+  client      Client @relation(fields: [clientId], references: [id])
 }
