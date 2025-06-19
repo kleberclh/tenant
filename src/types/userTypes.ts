@@ -3,5 +3,5 @@ export interface CreateUserType {
   email: string;
   password: string;
   enterpriseId: number;
-  admin: boolean;
+  role: "USER" | "ADMIN";
 }

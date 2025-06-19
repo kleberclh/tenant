@@ -1,12 +1,15 @@
 import { Request, Response } from "express";
 import { prisma } from "../../config/prisma";
-import { CreateUserType } from "../../utils/userTypes";
+import { CreateUserType } from "../../types/userTypes";
+import { hashPassword } from "../../utils/hashPassword";
 
 async function createUser(req: Request<{}, {}, CreateUserType>, res: Response) {
   try {
-    const { name, email, password, enterpriseId, admin } = req.body;
+    const { name, email, password, enterpriseId, role } = req.body;
 
-    if (!name || !email || !password || !enterpriseId || !admin) {
+    const hashedPassword = await hashPassword(password);
+
+    if (!name || !email || !password || !enterpriseId || !role) {
       res.status(400).json({
         error: {
           message: "Preencha todos os campos antes de criar!",
@@ -51,8 +54,8 @@ async function createUser(req: Request<{}, {}, CreateUserType>, res: Response) {
       data: {
         name,
         email,
-        password,
-        admin,
+        password: hashedPassword,
+        role,
         enterprise: {
           connect: { id: enterpriseId },
         },
@@ -93,7 +96,7 @@ async function getAllUsers(req: Request, res: Response) {
 async function updateUser(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const { name, email, password, admin } = req.body;
+    const { name, email, password, role } = req.body;
 
     const existingUser = await prisma.user.findUnique({
       where: { id: Number(id) },
@@ -116,7 +119,7 @@ async function updateUser(req: Request, res: Response) {
         name,
         email,
         password,
-        admin,
+        role,
       },
     });
 

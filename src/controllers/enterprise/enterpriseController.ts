@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../config/prisma";
-import { CreateEnterpriseBody } from "../../utils/enterpriseTypes";
+import { CreateEnterpriseBody } from "../../types/enterpriseTypes";
 
 /*
 FUNÇÃO PARA CRIAR UMA EMPRESA
