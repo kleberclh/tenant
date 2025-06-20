@@ -3,9 +3,9 @@ import { prisma } from "../../config/prisma";
 
 async function createClient(req: Request, res: Response) {
   try {
-    const { name, email, debt, enterpriseId } = req.body;
+    const { name, email, enterpriseId } = req.body;
 
-    if (!name || !email || !debt || !enterpriseId) {
+    if (!name || !email || !enterpriseId) {
       res.status(400).json({
         error: {
           message: "Preencha todos os campos antes de criar!",
@@ -34,7 +34,6 @@ async function createClient(req: Request, res: Response) {
       data: {
         name,
         email,
-        debt,
         enterprise: {
           connect: { id: enterpriseId },
         },
